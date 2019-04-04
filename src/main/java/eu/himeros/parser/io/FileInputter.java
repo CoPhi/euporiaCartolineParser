@@ -15,14 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-grammar EuporiaCartoline;
+package eu.himeros.parser.io;
 
-doc: figure+;
-figure: head figDesc;
-head: HEAD_ATTR text;
-figDesc: FIG_DESC_ATTR text;
-text: SPAN+;
-HEAD_ATTR: 'titolo:';
-FIG_DESC_ATTR: 'descrizione:';
-SPAN: [\u0021-\uFFFF]+;
-WS: (' '|'\n'|EOF)->skip;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+/**
+ *
+ * @author federico
+ */
+public class FileInputter {
+
+    public static String fileToString(String fileName) {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            br.lines().forEach(line -> {
+                sb.append(line).append('\n');
+            });
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
+        return sb.toString();
+    }
+}
